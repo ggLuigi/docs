@@ -2,9 +2,20 @@
 id: 8DgvZQhkfr4OxXTq7oX8p
 title: Root
 desc: ''
-updated: 1644491379885
+updated: 1644493696671
 created: 1644491379886
 ---
+# Welcome to my note
+I took notes to help me remember and understand the topic better.
+
+# Topics
+## Programming Language
+* [[C++|lang.cpp]]
+* [[Java|lang.java]]
+
+## Media
+### [[Video|video]]
+[[h264|media.video.codec.h264]]
 # Welcome to Dendron
 
 This is the root of your dendron vault. If you decide to publish your entire vault, this will be your landing page. You are free to customize any part of this page except the frontmatter on top.
