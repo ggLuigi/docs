@@ -10,6 +10,8 @@ site:
     siteHierarchies:
         - root
     siteRootDir: docs
+    siteUrl: https://ggluigi.github.io
+    assetsPrefix: /docs
     usePrettyRefs: true
     title: Dendron
     description: Personal knowledge space
@@ -40,6 +42,10 @@ workspace:
     vaults:
         -
             fsPath: vault
+            sync: noCommit
+            remote:
+                type: git
+                url: 'git@github.com:ggLuigi/docs.git'
     journal:
         dailyDomain: daily
         name: journal
