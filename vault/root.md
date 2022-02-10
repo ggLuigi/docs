@@ -2,7 +2,7 @@
 id: 8DgvZQhkfr4OxXTq7oX8p
 title: Root
 desc: ''
-updated: 1644493696671
+updated: 1644515446646
 created: 1644491379886
 ---
 # Welcome to my note
@@ -14,7 +14,7 @@ I took notes to help me remember and understand the topic better.
 * [[Java|lang.java]]
 
 ## Media
-### [[Video|video]]
+### [[Video|media.video]]
 [[h264|media.video.codec.h264]]
 # Welcome to Dendron
 
