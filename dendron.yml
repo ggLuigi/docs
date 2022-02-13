@@ -21,7 +21,6 @@ site:
         action: useVault
         payload:
             - vault
-            - dendron.templates
 commands:
     lookup:
         note:
@@ -41,10 +40,6 @@ commands:
         enableMarker: false
 workspace:
     vaults:
-        -
-            fsPath: templates
-            seed: dendron.templates
-            name: dendron.templates
         -
             fsPath: vault
             sync: noCommit
@@ -92,8 +87,6 @@ workspace:
     enableEditorDecorations: true
     maxPreviewsCached: 10
     maxNoteLength: 204800
-    seeds:
-        dendron.templates: {}
 preview:
     enableFMTitle: true
     enableNoteTitleForLink: true
