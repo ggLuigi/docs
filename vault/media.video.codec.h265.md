@@ -2,7 +2,7 @@
 id: wqu8pWtAlKD0RhylVdTYa
 title: H265
 desc: ''
-updated: 1644503513268
+updated: 1644566982798
 created: 1644503269059
 ---
 # H.265 HEVC (High Efficency Video Coding)

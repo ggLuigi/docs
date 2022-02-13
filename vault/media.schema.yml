@@ -1,0 +1,22 @@
+version: 1
+imports: []
+schemas:
+  - id: media
+    title: media
+    parent: root
+    children:
+      - video
+      - audio
+  - id: video
+    title: video
+    children:
+      - codec
+  - id: audio
+    title: audio
+    children:
+      - codec
+  - id: codec
+    namespace: true
+    template:
+      id: templates.media.codec
+      type: note

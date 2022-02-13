@@ -2,7 +2,7 @@
 id: QZNqH8gcdxV2C4mLRsZF7
 title: Git
 desc: ''
-updated: 1644506977206
+updated: 1644564122340
 created: 1644504069260
 ---
 # Create Git page
