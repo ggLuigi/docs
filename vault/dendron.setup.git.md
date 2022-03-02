@@ -2,7 +2,7 @@
 id: QZNqH8gcdxV2C4mLRsZF7
 title: Git
 desc: ''
-updated: 1644774765225
+updated: 1644776703078
 created: 1644504069260
 ---
 # Create Git page
@@ -80,7 +80,8 @@ Reference page: [GitHub Pages with GitHub Actions](https://wiki.dendron.so/notes
    touch .github/workflows/publish.yml
    ```
 2. [publish.yml](https://wiki.dendron.so/notes/FnK2ws6w1uaS1YzBUY3BR/#steps---setup-github-actions)
-3. Don't know why it will have `.next` folder in Github action
+3. [`action/cache@v2`][action/cachev2] cache the `node-module/` from previous build. And update it if it changes
+4. This also cache `.next` folder from previous build. The next build if found cache, it will restore from it. In this case, it saves time from installing dependencies, initializing next app again
 4. check https://github.com/marketplace/actions/cache
 5. Commit and push the change
    ```sh
@@ -88,3 +89,4 @@ Reference page: [GitHub Pages with GitHub Actions](https://wiki.dendron.so/notes
    git commit -m "add workflow"
    git push
    ```
+[action/cachev2]: https://github.com/marketplace/actions/cache

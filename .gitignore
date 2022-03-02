@@ -1,4 +1,5 @@
 node_modules
+package-lock.json
 .dendron.*
 build
 seeds
@@ -6,4 +7,5 @@ seeds
 .vscode
 .next
 
-vault/journal*
+vault/journal.todo*
+docs/*
