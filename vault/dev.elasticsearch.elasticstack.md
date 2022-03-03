@@ -2,18 +2,19 @@
 id: 0fvxavYACoxQOOAsCUtys
 title: Elasticstack
 desc: ''
-updated: 1645622271796
+updated: 1646280317670
 created: 1645539306280
 ---
 # Introduction
-A database that holds data and allow advanced efficient searching.
-An analytic and search engine.
-Allows different search methods, like text, search relevance, sorting result.
-Query and analyze structured data.
-It scales easily with data volumes and query throughput.
+* A database that holds data and allow advanced efficient searching.
+* An analytic and search engine.
+* Allows different search methods, like text, search relevance, sorting result.
+* Query and analyze structured data.
+* It scales easily with data volumes and query throughput.
 
-Data is stored as *Documents* (= row in SQL)
-Document data in *fields* (= columns in SQL)
+Table is known as ***Index***
+Data is stored as ***Documents*** (= row in SQL)
+Document data in ***Fields*** (= columns in SQL)
 
 | Terminology                                          |
 | ---------------------------------------------------- |

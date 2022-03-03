@@ -18,6 +18,6 @@
   },
   "homepage": "https://github.com/ggLuigi/docs#readme",
   "dependencies": {
-    "@dendronhq/dendron-cli": "^0.81.0"
+    "@dendronhq/dendron-cli": "^0.84.0"
   }
 }

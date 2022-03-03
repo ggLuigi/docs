@@ -2,7 +2,7 @@
 id: mpylwaarnttr294ymrcyees
 title: Hledger
 desc: ''
-updated: 1646158498857
+updated: 1646193033529
 created: 1646135339071
 ---
 
@@ -50,15 +50,35 @@ Based on Ledger-Cli. Coded with Haskell.
    
    The concerned columns are:
    
-   | Date  |    Account    |        Category        |     SubCategory     |    Note     | ~~HKD~~ |            Income/Expense             | Note (additional note) | Amount | Currency | ~~Account~~ |
-   | :---: | :-----------: | :--------------------: | :-----------------: | :---------: | :-----: | :-----------------------------------: | :--------------------: | :----: | :------: | :---------: |
-   | date  | asset account | expense / asset accout | expense subcategory | description |   ---   | condition (income, expense, transfer) |    additional note     | amount | currency |     ---     |
+   | Date  |    Account    |        Category         |     SubCategory     |    Note     | ~~HKD~~ |            Income/Expense             | Note (additional note) | Amount | Currency | ~~Account~~ |
+   | :---: | :-----------: | :---------------------: | :-----------------: | :---------: | :-----: | :-----------------------------------: | :--------------------: | :----: | :------: | :---------: |
+   | date  | asset account | expense / asset account | expense subcategory | description |   ---   | condition (income, expense, transfer) |    additional note     | amount | currency |     ---     |
 
-### Conversion
+### Conversion logic
 * To convert from csv to journal
   1. Specify all assets with groups
      1. e.g. assets:bank:HSBC.
      2. assets:credit card:SimplyCash
      3. assets:digital wallet
+  2. For all asset account -> need to match account with the specified assets
+  3. If 'Income/Expense' column is `Income`
+     1. asset account1 -> account
+     2. account2 -> income:<Category\>:<SubCategory\>
+     3. amount1 -> **+**amount
+     4. amount2 -> -amount
+  4. else if 'Income/Expense' column is `Expense`
+     1. asset account1 -> account
+     2. account2 -> expense:<Category\>:<SubCategory\>
+     3. amount1 -> **-**amount
+     4. amount2 -> +amount
+  5. else if 'Income/Expense' column is `Trasnsfer-Out`
+     1. asset account1 -> account
+     2. account2 -> asset account -> <Category\>
+     3. amount1 -> **-**amount
+     4. amount2 -> +amount
+  6. currency -> currency
+  7. Date -> date
+  8. Note -> note
+  9. additional note -> additional note
 
 journal format: https://hledger.org/add.html

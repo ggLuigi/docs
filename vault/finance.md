@@ -7,5 +7,5 @@ created: 1646135232309
 ---
 Plain-Text Accounting
 
-[[Hledger|journal.finance.hledger]]
-[[Ledger|journal.finance.ledger]]
+[[Hledger|finance.hledger]]
+[[Ledger|finance.ledger]]
