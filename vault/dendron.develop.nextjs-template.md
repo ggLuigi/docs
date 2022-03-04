@@ -2,7 +2,7 @@
 id: A1EsVklLf3ZBWYVQJpwcf
 title: Nextjs Template
 desc: ''
-updated: 1644773321360
+updated: 1646393700168
 created: 1644770654774
 ---
 
@@ -56,3 +56,4 @@ to (remove the '/' as Github takes the same level as `index.html` instead of roo
 ```md
 <link rel="icon" href="favicon.ico" />
 ```
+Reference: [(CI/CD): Deploy Next.js (SSG) to GitHub Pages using GitHub Actions](https://youtu.be/yRz8D_oJMWQ?t=1068)

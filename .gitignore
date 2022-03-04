@@ -1,6 +1,7 @@
 node_modules
 package-lock.json
 .dendron.*
+dendron*migrate*.yml
 build
 seeds
 
@@ -8,4 +9,4 @@ seeds
 .next
 
 vault/journal.todo*
-docs/*
+deprec_docs/*

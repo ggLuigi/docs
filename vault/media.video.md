@@ -2,9 +2,8 @@
 id: 0G1qrerCEOLpkAULjqQPB
 title: Video
 desc: ''
-updated: 1644598156141
+updated: 1646395443406
 created: 1644501313350
-stub: true
 ---
 # Video information
 ## Codec
