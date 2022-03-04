@@ -15,8 +15,8 @@ Then make sure `Dendron` extension is installed in VSCode to view the notes.
 
 A project can have multiple vaults. But there is only 1 vault here that stores all my notes. (will re-organize it if there is a need to separate notes into different vaults.)
 ## Web page publishing upon commit
-This project has GitHub Action configured to build the webpage as shown in https://ggluigi.github.io/docs/ every time new commit is made.
+This project has GitHub Action configured to build the webpage as shown in https://ggluigi.github.io/mydocs/ every time new commit is made.
 
 The formatted web page is built by linking the markdown notes I have created under `vault` folder.
 
-And `docs` stores the files for webpage formats
+~~And `docs` stores the files for webpage formats~~

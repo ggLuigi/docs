@@ -1,6 +1,6 @@
 ---
 id: ZpQdEjz6MWYVcz5Fm0wNo
-title: Notation
+title: Key Notation
 desc: ''
 updated: 1644572465677
 created: 1644572443303

@@ -5,6 +5,7 @@ desc: ''
 updated: 1644598421829
 created: 1644493654442
 ---
+
 # H.264 AVC (Advanced Video Coding)
 Widely supported video codec
 

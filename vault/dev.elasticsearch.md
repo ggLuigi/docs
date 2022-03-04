@@ -2,7 +2,7 @@
 id: CQgNUiY4rSgejxxCZYPWy
 title: Elasticsearch
 desc: ''
-updated: 1646283089464
+updated: 1646305583697
 created: 1645539090151
 ---
 
@@ -93,3 +93,11 @@ Replica shards are NEVER stored in the same node of primary shard.
 
 ### Snapshot
 [**Backup**] - Having snapshots can do backup before doing some (critical/risky) changes to the database.
+
+### Node
+* Master - creating, deleting indices, keeping track of nodes
+* Data - store the data shards, handle search query to data
+* Ingest - ingest pipeline for processing data before adding to index
+* Reference: https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-node.html
+
+
