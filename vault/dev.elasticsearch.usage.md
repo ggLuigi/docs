@@ -2,7 +2,7 @@
 id: g0g7i6q68tpcz27w22apuls
 title: Usage
 desc: ''
-updated: 1646390135434
+updated: 1646408720801
 created: 1646241849702
 ---
 
@@ -239,3 +239,60 @@ Can check the response "`result`" is `created` or `updated`
 It is actually the same as [[Adding document|dev.elasticsearch.usage#adding-documents-data]]
 
 Because the elasticsearch document is immutable, basically it is just removing and adding new document again.
+
+## Delete documents
+```
+DELETE /<index>/_doc/<id>
+DELETE /products/_doc/101
+``` 
+
+## Update by query (update data with matching data)
+with `script` for update operation and `query` for matching data operation
+```
+POST /products/_update_by_query
+{
+  "script": {
+    "source": "ctx._source.in_stock--"
+  },
+  "query": {
+    "match_all": {}
+  }
+}
+```
+
+## Delete by query (delete data with matching data)
+delete data if it matches the query. Note it is using `POST`
+```
+POST /products/_delete_by_query
+{
+  "query": {
+    "match_all": {}
+  }
+}
+```
+
+## Batch Processing
+Bulk API request. The header content-type has to be `Content-Type: application/x-ndjson`.
+There are 4 actions: index (add or overwrite the document), create (add document if not exist), update, delete
+The document has to be in one line for document or query.
+And it has to be line separated!! And for the last line, it requires a empty new line
+It is good for having script to generate the request for large amount of data manipulation
+```
+POST /_bulk
+{ "index": { "_index": "products", "_id": 200 }}
+{ "name": "Reader", "price": 19, "in_stock": 39 }
+{ "create": { "_index": "products", "_id": 201 }}
+{ "name": "Bread", "price": 2, "in_stock": 100 }
+
+// can use index in the api, thus no need to put the index in every line
+POST /products/_bulk
+{ "update": { "_id": 201 }}
+{ "doc": { "price": 22}}
+{ "delete": { "_id": 200}}
+```
+
+### Using cURL
+Make sure the Header content type is using `x-ndjson` and the file is read by `--data-binary` to preserve the last empty new line in the file.
+```
+curl -XPOST -H 'Content-Type: application/x-ndjson' --cacert /e/elasticsearch/elasticsearch-8.0.1-windows-x86_64/elasticsearch-8.0.1/config/certs/http_ca.crt -u elastic:password https://localhost:9200/products/_bulk --data-binary "@products-bulk.json"
+```
