@@ -86,7 +86,6 @@ publishing:
     enableKatex: true
     assetsPrefix: /mydocs
     copyAssets: true
-    siteFaviconPath: /
     siteHierarchies:
         - root
     enableSiteLastModified: true
