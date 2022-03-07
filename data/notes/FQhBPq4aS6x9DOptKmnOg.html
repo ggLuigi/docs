@@ -1,0 +1,71 @@
+<h1 id="dendron"><a aria-hidden="true" class="anchor-heading" href="#dendron"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Dendron</h1>
+<h2 id="dendron-usage"><a aria-hidden="true" class="anchor-heading" href="#dendron-usage"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Dendron Usage</h2>
+<pre><code>.
+└── workspace
+    ├── vault.main
+    │   ├── foo.md
+    │   ├── foo.one.md
+    │   └── foo.two.md
+    └── vault.secret (hypothetical)
+        ├── secret.one.md
+        └── secret.two.md
+</code></pre>
+<h2 id="workspace"><a aria-hidden="true" class="anchor-heading" href="#workspace"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Workspace</h2>
+<p>Workspace level means the directory that holds <code>dendron.yml</code> and/or <code>dendron.code-workspace</code></p>
+<h2 id="vault"><a aria-hidden="true" class="anchor-heading" href="#vault"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Vault</h2>
+<p>Vault level is the directory that holds <code>root.md</code> and possibly holds every other md files</p>
+<ul>
+<li>to add vault -> <code>C-S-P</code><a id="fnref-keynotation" class="fnref" href="#fn-keynotation">keynotation</a> Dendron:Vault Add</li>
+</ul>
+<h2 id="naming-convention"><a aria-hidden="true" class="anchor-heading" href="#naming-convention"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Naming Convention</h2>
+<p>Markdown note file naming convention: kebab case</p>
+<ul>
+<li><code>dendron.docs.mash-potato.md -> title: Mash Potato</code></li>
+</ul>
+<h2 id="schema"><a aria-hidden="true" class="anchor-heading" href="#schema"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Schema</h2>
+<p>It is like a rule for folder structure. It describes your notes hierachy in a parent-children relations
+The rule can be used for auto-completion when creating/finding new notes for the specific file path
+e.g. <code>recipe.vege.potato.mash-potato.md</code>
+it is under the schema of:</p>
+<ul>
+<li><code>recipe.</code></li>
+<li><code>recipe.vege.</code></li>
+<li><code>recipe.vege.potato.</code></li>
+<li><code>recipe.vege.potato.mash-potato.</code>
+With Schema, you can add templates with matching schema
+And in xxx.schema.yml file, you must define every group. Cannot list the children id without defining its entry.
+<code>namespace: true</code> means it has arbitrary children. Meaning it has another middle '*' level before defined <code>children</code> level.</li>
+</ul>
+<pre class="language-yml"><code class="language-yml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token number">1</span>
+<span class="token key atrule">imports</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token comment"># can import other schema file (with filename)</span>
+<span class="token key atrule">schemas</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">id</span><span class="token punctuation">:</span> media <span class="token comment"># the name that has to match with the file name</span>
+    <span class="token key atrule">title</span><span class="token punctuation">:</span> media <span class="token comment"># a title you give to this schema (can be diff from id)</span>
+    <span class="token key atrule">parent</span><span class="token punctuation">:</span> root <span class="token comment"># parent of this file. at least one has to set `root`</span>
+    <span class="token key atrule">children</span><span class="token punctuation">:</span> <span class="token comment"># children of this file</span>
+      <span class="token punctuation">-</span> video
+      <span class="token punctuation">-</span> audio
+  <span class="token punctuation">-</span> <span class="token key atrule">id</span><span class="token punctuation">:</span> video <span class="token comment"># you can separate each group by each item</span>
+    <span class="token key atrule">title</span><span class="token punctuation">:</span> video
+    <span class="token key atrule">children</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> codec
+  <span class="token punctuation">-</span> <span class="token key atrule">id</span><span class="token punctuation">:</span> audio
+    <span class="token key atrule">title</span><span class="token punctuation">:</span> audio
+    <span class="token key atrule">children</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> codec
+  <span class="token punctuation">-</span> <span class="token key atrule">id</span><span class="token punctuation">:</span> codec
+    <span class="token key atrule">namespace</span><span class="token punctuation">:</span> <span class="token boolean important">true</span> <span class="token comment"># this matches the immediate level of children -> codec.xxx, (but not codec.xxx.abc)</span>
+    <span class="token key atrule">template</span><span class="token punctuation">:</span>
+      <span class="token key atrule">id</span><span class="token punctuation">:</span> templates.media.codec
+      <span class="token key atrule">type</span><span class="token punctuation">:</span> note
+</code></pre>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/mydocs/notes/dyDuKe8nei51qtpveYoe0">Develop</a></li>
+<li><a href="/mydocs/notes/P8YvYr7NnFrLmtucJwTvT">Setup</a></li>
+</ol>
+<h2 id="footnotes"><a aria-hidden="true" class="anchor-heading" href="#footnotes"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Footnotes</h2>
+<ol>
+<li><span id="fn-keynotation" style="width: 0; height: 0;"></span><p><a title="Private" style="color: brown" href="https://wiki.dendron.so/notes/hfyvYGJZQiUwQaaxQO27q.html" target="_blank">key notation (Private)</a><a class="fn" href="#fnref-keynotation">˄</a></p></li>
+</ol>

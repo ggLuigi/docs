@@ -1,0 +1,35 @@
+<h1 id="ledger"><a aria-hidden="true" class="anchor-heading" href="#ledger"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Ledger</h1>
+<h1 id="ledger-1"><a aria-hidden="true" class="anchor-heading" href="#ledger-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Ledger</h1>
+<p>Command-line Accounting</p>
+<h2 id="installation"><a aria-hidden="true" class="anchor-heading" href="#installation"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Installation</h2>
+<ul>
+<li>git clone git://github.com/ledger/ledger.git</li>
+<li>cd ledger</li>
+<li>Install dependencies
+<pre class="language-sh"><code class="language-sh">sudo apt update
+sudo apt-get install build-essential cmake doxygen \
+   libboost-system-dev libboost-dev python3-dev gettext git \
+   libboost-date-time-dev libboost-filesystem-dev \
+   libboost-iostreams-dev libboost-python-dev libboost-regex-dev \
+   libboost-test-dev libedit-dev libgmp3-dev libmpfr-dev texinfo tzdata
+</code></pre>
+</li>
+<li>
+<pre class="language-sh"><code class="language-sh">./acprep update # Update to the latest, configure, make
+</code></pre>
+</li>
+<li>Use with
+<pre class="language-sh"><code class="language-sh">./ledger 
+</code></pre>
+</li>
+<li>Or add to $PATH for global usage
+<pre class="language-sh"><code class="language-sh">sudo ln -s /&#x3C;abs_path>/ledger/ledger /usr/local/bin/ledger
+</code></pre>
+</li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/mydocs/notes/8DgvZQhkfr4OxXTq7oX8p">Root</a></li>
+<li><a href="/mydocs/notes/dqqbqwres0mwnmm56y70t78">Finance</a></li>
+</ul>

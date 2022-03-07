@@ -1,0 +1,14 @@
+<h1 id="infomation"><a aria-hidden="true" class="anchor-heading" href="#infomation"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Infomation</h1>
+<h2 id="routing"><a aria-hidden="true" class="anchor-heading" href="#routing"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Routing</h2>
+<p>ES uses a routing formula to find the shard location of a document with its ID.
+The formula includes the hash of ID, and number of shards.</p>
+<p>e.g. <code>_shard_id = hash(_routing) % num_of_shards</code>
+If number of shards changes after the index is created, the data might not be found afterwards with incorrect routing result</p>
+<h2 id="elasticsearch-readwrite-data"><a aria-hidden="true" class="anchor-heading" href="#elasticsearch-readwrite-data"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Elasticsearch read/write data</h2>
+<p>Read - ES has coordinating node that takes the GET request and passes to the best performance shard copy (could be primary or replica shards). This is done by <strong>Adaptive Replica Selection</strong>. The shard copy will return the result to that node, and then is passed to the ES client (e.g. Kibana, or other applications)</p>
+<p>Write - ES's coordinating node taks the request and find the <strong>primary shard</strong>. The shard has to validate the request. Then write to itself locally. Forward the request to its replica shards in parallel.</p>
+<p>Versioning - <code>_version</code> metadata is placed along with each document. When the document with certain ID is deleted, the ID is saved for 60s. After that, it will reset the version back to '1'. For every update or changes, it will increment <code>_version</code> by 1.
+It could be used for checking the times of update. But this is not that useful currently as the original objective "optimistic concurrency control" has now improved with other approaches.</p>
+<p>Concurrency Control - when 2 requests are placed, the result might be incorrect. "<code>_primary_term</code>" and "<code>_seq_no</code>" are used.
+<code>_primary_term</code> is a counter for times that the primary shard is changed. (could be due to hardward failure). This counter is persisted in cluster state.
+<code>_seq_no</code> is a counter of number of write operation. Primary shard handles this sequence number.</p>

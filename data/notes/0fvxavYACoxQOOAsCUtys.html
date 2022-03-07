@@ -1,0 +1,68 @@
+<h1 id="elasticstack"><a aria-hidden="true" class="anchor-heading" href="#elasticstack"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Elasticstack</h1>
+<h1 id="introduction"><a aria-hidden="true" class="anchor-heading" href="#introduction"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Introduction</h1>
+<ul>
+<li>A database that holds data and allow advanced efficient searching.</li>
+<li>An analytic and search engine.</li>
+<li>Allows different search methods, like text, search relevance, sorting result.</li>
+<li>Query and analyze structured data.</li>
+<li>It scales easily with data volumes and query throughput.</li>
+</ul>
+<p>Table is known as <strong><em>Index</em></strong>
+Data is stored as <strong><em>Documents</em></strong> (= row in SQL)
+Document data in <strong><em>Fields</em></strong> (= columns in SQL)</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Terminology</th></tr></thead><tbody><tr><td>Elasticsearch (ES)</td></tr><tr><td>ELK = Elasticsearch, Logstash, Kibana</td></tr><tr><td>Elastic Stack = Superset of ELK, which also has Beat</td></tr></tbody></table>
+<div class="mermaid">
+    flowchart LR;
+    Logstash &#x26; Beat -->ES;
+    ES&#x3C;-->Kibana;
+    X-pack
+</div>
+<h2 id="kibana"><a aria-hidden="true" class="anchor-heading" href="#kibana"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Kibana</h2>
+<ul>
+<li>UI dashboard to visualize the elasticsearch data/result</li>
+<li>Analyze the data with different visualization</li>
+<li>It can request data from Elasticsearch</li>
+</ul>
+<h2 id="logstash"><a aria-hidden="true" class="anchor-heading" href="#logstash"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Logstash</h2>
+<ul>
+<li>An event processing pipeling</li>
+<li>Process logs from applications, send to Elasticsearch</li>
+<li>Input (different types of data, log files, computer stats file, json data) -></li>
+<li>Filter (how to process different types of data as an event, how to read json, xml or other formats) -></li>
+<li>Output (where to stash the data, Elasticsearch, Kafka queue, HTTP endpoints, etc)</li>
+<li>e.g. a line of log can be translate to an event formatted to json by specific processor</li>
+</ul>
+<h2 id="x-pack"><a aria-hidden="true" class="anchor-heading" href="#x-pack"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>X-Pack</h2>
+<p>Additional features for Elasticsearch and Kibana</p>
+<ul>
+<li>Security (authentication / authorization, control user permission)</li>
+<li>Monitoring (performance of Elastic Stacks, CPU usage)</li>
+<li>Alerting (CPU usage, disk space, customer request. by e-mail, Slack, other applications)</li>
+<li>Reporting (export Kibana visualization data, schedule report generation)</li>
+<li>Machine Learning (abnormality detection, forecasting)</li>
+<li>Graph (analyze relationship of data, suggest relevance data)</li>
+<li>Elasticsearch SQL (can use SQL instead of use Query DSL (json))</li>
+</ul>
+<h2 id="beats"><a aria-hidden="true" class="anchor-heading" href="#beats"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Beats</h2>
+<ul>
+<li>Data shippers - send data to Logstash/ES</li>
+<li>Filebeat - collect logs and send to Logstash/ES</li>
+<li>Metricbeat - collect system and service statistic</li>
+</ul>

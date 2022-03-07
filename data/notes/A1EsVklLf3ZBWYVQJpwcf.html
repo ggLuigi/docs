@@ -1,0 +1,37 @@
+<h1 id="nextjs-template"><a aria-hidden="true" class="anchor-heading" href="#nextjs-template"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Nextjs Template</h1>
+<h1 id="publish-page"><a aria-hidden="true" class="anchor-heading" href="#publish-page"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Publish page</h1>
+<pre><code>npx dendron publish init # init the publish
+</code></pre>
+<p>This will pull the <a href="https://github.com/dendronhq/nextjs-template"><code>nextjs-template</code></a> github repo to <code>&#x3C;workspace>/.next</code> folder</p>
+<p><a href="https://github.com/dendronhq/dendron/blob/master/packages/dendron-cli/src/commands/publishCLICommand.ts">publish command file entry point</a>
+First, it will init the git repo</p>
+<ul>
+<li>initialize the <code>nextPath</code> (meaning the root path of this dendron project) if not initialized</li>
+<li>clone the <a href="https://github.com/dendronhq/nextjs-template">nextjs-template</a> with <a href="https://github.com/dendronhq/dendron/blob/cfffd6a1988c372f7472bb2cd93126befd866a0d/packages/pods-core/src/builtin/NextjsExportPod.ts">NextjsExportPod</a> to root path of <code>.next</code> folder</li>
+<li>then install dependencies -> <code>npm install</code></li>
+</ul>
+<p>If initialized,</p>
+<ul>
+<li>it will update the <a href="https://github.com/dendronhq/nextjs-template">nextjs-template</a> repo instead,</li>
+<li>pull the latest commit of the main branch.</li>
+<li>then install dependencies -> <code>npm install</code></li>
+</ul>
+<pre><code>npx dendron publish dev
+</code></pre>
+<p>The above will call <code>next dev</code> in <a href="https://github.com/dendronhq/nextjs-template">nextjs-template</a> repo. Test your built web page in development</p>
+<pre><code>npx dendron publish export
+</code></pre>
+<p>The above will call <code>next export</code> (meaning <code>next build &#x26;&#x26; next export</code>) in <a href="https://github.com/dendronhq/nextjs-template">nextjs-template</a> repo.</p>
+<pre><code>npx dendron publish export --target github --yes
+</code></pre>
+<p>With <code>--target github</code> flag, this will create <code>docs/</code> folder and move the built app - <code>.next/out/</code> folder to <code>docs/</code> folder.
+<code>--yes</code> is used to automatically remove <code>docs/</code> folder if existed.</p>
+<h3 id="found-bug-on-github-publish"><a aria-hidden="true" class="anchor-heading" href="#found-bug-on-github-publish"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Found bug on github publish</h3>
+<p>-> <a href="https://github.com/dendronhq/nextjs-template/blob/main/pages/_app.tsx">https://github.com/dendronhq/nextjs-template/blob/main/pages/_app.tsx</a>
+change the </p>
+<pre class="language-md"><code class="language-md"><span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;</span>link</span> <span class="token attr-name">rel</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>icon<span class="token punctuation">"</span></span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>/favicon.ico<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+</code></pre>
+<p>to (remove the '/' as Github takes the same level as <code>index.html</code> instead of root level (which is '/' of <code>/home/worker/&#x3C;repo-name>/&#x3C;repo-name>/&#x3C;publish_dir></code>))</p>
+<pre class="language-md"><code class="language-md"><span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;</span>link</span> <span class="token attr-name">rel</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>icon<span class="token punctuation">"</span></span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>favicon.ico<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+</code></pre>
+<p>Reference: <a href="https://youtu.be/yRz8D_oJMWQ?t=1068">(CI/CD): Deploy Next.js (SSG) to GitHub Pages using GitHub Actions</a></p>

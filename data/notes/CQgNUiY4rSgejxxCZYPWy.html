@@ -1,0 +1,92 @@
+<h1 id="elasticsearch"><a aria-hidden="true" class="anchor-heading" href="#elasticsearch"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Elasticsearch</h1>
+<p>Reference: <a href="https://harmonic-owlstars.udemy.com/course/elasticsearch-complete-guide/">https://harmonic-owlstars.udemy.com/course/elasticsearch-complete-guide/</a>
+Github for queries example: <a href="https://github.com/codingexplained/complete-guide-to-elasticsearch">https://github.com/codingexplained/complete-guide-to-elasticsearch</a></p>
+<h2 id="installation"><a aria-hidden="true" class="anchor-heading" href="#installation"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Installation</h2>
+<p>Elasticsearch comes with a bunch of jar files, along with Apache Lucene library.
+There is no need for installation but download the elasticsearch jar file.</p>
+<p>Download the zip / tar file
+then run</p>
+<pre class="language-sh"><code class="language-sh">bin\elasticsearch.bat #or
+bin/elasticsearch
+</code></pre>
+<p>!!! Keep the record of password, http cert and enrollment token shown on the console log
+This is needed for access/requesting elasticsearch with security enabled</p>
+<p>To reset password for default user 'elastic', need to run the elasticsearch first,
+and run the below command in another terminal</p>
+<pre class="language-sh"><code class="language-sh">bin\elasticsearch-reset-password.bat -u elastic --url "https://127.0.0.1:9200"
+</code></pre>
+<p>To access elasticsearch with security enabled</p>
+<pre class="language-sh"><code class="language-sh">curl --cacert config/certs/http_ca.crt -u elastic https://localhost:9200
+# with password on the line
+curl --cacert config/certs/http_ca.crt -u elastic:password https://localhost:9200
+</code></pre>
+<p>Reference: <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/configuring-stack-security.html">https://www.elastic.co/guide/en/elasticsearch/reference/current/configuring-stack-security.html</a></p>
+<h2 id="config"><a aria-hidden="true" class="anchor-heading" href="#config"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Config</h2>
+<p>Change any configurations in <code>elastic.yml</code> inside <code>config/</code> folder.
+e.g. Ip address, port</p>
+<h2 id="architecture-of-elasticsearch"><a aria-hidden="true" class="anchor-heading" href="#architecture-of-elasticsearch"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Architecture of Elasticsearch</h2>
+<p>When we start up Elasticsearch(ES), we start up a node.</p>
+<ul>
+<li><strong>Node</strong> - an instance of ES that stores the data.<br>
+Bring up more node to store more data, each node stores part of the data.<br>
+Multiple nodes can be run on a same machine.<br>
+It always resides in a cluster.</li>
+<li><strong>Cluster</strong> - a collection of nodes that together contains all of the our data.<br>
+Usually one cluster is enough without the need of cross-cluster searches.<br>
+Still, you can run different clusters for different purposes. This can separate things logically and config differently.</li>
+<li><strong>document</strong> - A unit of data that stored in the cluster. A JSON object with metadata along with your stored desire data.<br>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Mark"</span><span class="token punctuation">,</span>
+    <span class="token property">"country"</span><span class="token operator">:</span> <span class="token string">"England"</span>
+<span class="token punctuation">}</span>
+</code></pre>
+ is stored in <code>document</code> like this inside <code>_source</code>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token property">"_index"</span><span class="token operator">:</span> <span class="token string">"people"</span><span class="token punctuation">,</span>
+    <span class="token property">"_type"</span><span class="token operator">:</span> <span class="token string">"doc"</span><span class="token punctuation">,</span>
+    <span class="token property">"_id"</span><span class="token operator">:</span> <span class="token string">"123d2f"</span><span class="token punctuation">,</span>
+    <span class="token property">"_version"</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+    <span class="token property">"_seq_no"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+    <span class="token property">"_primary_term"</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+    <span class="token property">"_source"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Mark"</span><span class="token punctuation">,</span>
+        <span class="token property">"country"</span><span class="token operator">:</span> <span class="token string">"England"</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+ <em>Documents</em> are grouped together with <em>index</em> or <em>indices</em></li>
+</ul>
+<h3 id="sharding"><a aria-hidden="true" class="anchor-heading" href="#sharding"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Sharding</h3>
+<p>[<strong>Scalibility</strong>] - Divide indices into small piece, called a <em>shard</em>. Thus, sharding is done on index level. It can scale horizontally with data volume.</p>
+<p>[<strong>Distributed data</strong>] - Data in one index can split into shards and place onto different nodes. It is not neccessarily to be placed on separate different nodes, some shards can place onto the same node while others are in another nodes.</p>
+<p>Each shard is independent.
+[<strong>Parallelized search</strong>] - Sharding improves performance by running searches on separate shards at the same time. With this, it can also utilize the hardware of separate nodes.</p>
+<p>Once the index is created, the shard number cannot be changed.
+With ES >= 7.0.0, default shard number is 1. <strong>Split API</strong> can be used to increase the shard number after creation. It involves creating new index. In contrast, <strong>Shrink API</strong> can be used to decrease the shard number.</p>
+<h3 id="replication"><a aria-hidden="true" class="anchor-heading" href="#replication"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Replication</h3>
+<p>[<strong>Redundancy</strong>] - Having a full replication of data can prevent a single failure on hardward causing data lost. It copies shards as <em>replica shards</em>. <em>Primary shard</em> means the shard is replicated. <em>Replication group</em> means the replication of shards and original shard.
+Replica shards are NEVER stored in the same node of primary shard.</p>
+<p>[<strong>Query Performance</strong>] - Having replica shards can improve search performance. CPU parallelization is used if multiple shards on the same nodes. E.g. if 3 requests incoming, 3 requests can be run on 3 different replica shards at the same time. CPU can run simultaneous task with threads and query different shards on the same node.</p>
+<h3 id="snapshot"><a aria-hidden="true" class="anchor-heading" href="#snapshot"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Snapshot</h3>
+<p>[<strong>Backup</strong>] - Having snapshots can do backup before doing some (critical/risky) changes to the database.</p>
+<h3 id="node"><a aria-hidden="true" class="anchor-heading" href="#node"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Node</h3>
+<ul>
+<li>Master - creating, deleting indices, keeping track of nodes</li>
+<li>Data - store the data shards, handle search query to data</li>
+<li>Ingest - ingest pipeline for processing data before adding to index</li>
+<li>Reference: <a href="https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-node.html">https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-node.html</a></li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/mydocs/notes/0fvxavYACoxQOOAsCUtys">Elasticstack</a></li>
+<li><a href="/mydocs/notes/55mexi32x3t0vqdt952uh7s">Infomation</a></li>
+<li><a href="/mydocs/notes/mqg2951r8ndcyy340hj5y07">Kibana</a></li>
+<li><a href="/mydocs/notes/g0g7i6q68tpcz27w22apuls">Usage</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/mydocs/notes/8DgvZQhkfr4OxXTq7oX8p">Root</a></li>
+<li><a href="/mydocs/notes/mqg2951r8ndcyy340hj5y07">Kibana</a></li>
+</ul>

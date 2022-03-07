@@ -1,0 +1,26 @@
+<h1 id="kibana"><a aria-hidden="true" class="anchor-heading" href="#kibana"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Kibana</h1>
+<h2 id="installation"><a aria-hidden="true" class="anchor-heading" href="#installation"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Installation</h2>
+<p>Similar to <a href="/mydocs/notes/CQgNUiY4rSgejxxCZYPWy#installation">Elasticsearch installation</a>
+Only need to run the command to bring up the Kibana</p>
+<pre class="language-sh"><code class="language-sh">bin\kibana.bat #or
+bin/kibana
+</code></pre>
+<p>It requires the Elasticsearch to be running first.</p>
+<p>For security enabled login</p>
+<ol>
+<li>Then open in the browser with <a href="http://localhost:5601">http://localhost:5601</a>
+Or click the link shown on the console log</li>
+<li>Paste the enrollment token that you copied and click the button to connect your Kibana instance with Elasticsearch. <br>
+If the token expires (only last for 30mins), generate new token with command:
+<pre class="language-sh"><code class="language-sh">bin\elasticsearch-create-enrollment-token.bat -s kibana
+</code></pre>
+</li>
+<li>Log in to Kibana as the elastic user with the password that was generated when you started Elasticsearch<br>
+<pre><code>user: elastic
+pw: xxxxxxxxxxxx
+</code></pre>
+</li>
+</ol>
+<h2 id="config"><a aria-hidden="true" class="anchor-heading" href="#config"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Config</h2>
+<p>Change any configurations in <code>kibana.yml</code> inside <code>config/</code> folder.
+e.g. Ip address, port</p>

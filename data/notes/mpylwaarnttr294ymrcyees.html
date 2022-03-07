@@ -1,0 +1,157 @@
+<h1 id="hledger"><a aria-hidden="true" class="anchor-heading" href="#hledger"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Hledger</h1>
+<h1 id="hledger-1"><a aria-hidden="true" class="anchor-heading" href="#hledger-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Hledger</h1>
+<p>Based on Ledger-Cli. Coded with Haskell.</p>
+<h2 id="installation"><a aria-hidden="true" class="anchor-heading" href="#installation"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Installation</h2>
+<ul>
+<li>Download the latest release: <a href="https://github.com/simonmichael/hledger/releases">https://github.com/simonmichael/hledger/releases</a> (take the major release version)</li>
+<li>Download the appropriate "hledger-PLATFORM.zip" file below.</li>
+<li>Unzip it to get 2 or 3 hledger binaries in the current directory.</li>
+<li>On GNU/Linux, you will need to chmod +x these files to make them executable. They should run on most GNU/Linux machines with x64 or (when provided) arm32v7 architecture.</li>
+<li>Use with
+<pre class="language-sh"><code class="language-sh">./hledger-linux-static-x64 -f .hledger.journal print
+</code></pre>
+</li>
+<li>Or add to $PATH for global usage
+<pre class="language-sh"><code class="language-sh">sudo ln -s /&#x3C;abs_path>/hledger-linux-static-x64 /usr/local/bin/hledger
+</code></pre>
+</li>
+</ul>
+<h2 id="translate-csv-to-journal"><a aria-hidden="true" class="anchor-heading" href="#translate-csv-to-journal"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Translate csv to journal</h2>
+<h3 id="file-format"><a aria-hidden="true" class="anchor-heading" href="#file-format"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>File format</h3>
+<ol>
+<li>
+<p>A journal file</p>
+<pre><code>; $HOME/.hledger.journal
+2020-01-01 opening balances
+    assets:checking         $1234
+    equity
+
+2020-03-15 client payment
+    assets:checking         $2000
+    income:consulting
+
+2020-03-20 Sprouts
+    expenses:food:groceries  $100
+    assets:cash               $40
+    assets:checking
+</code></pre>
+</li>
+<li>
+<p>My csv file exported from Money Manager</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th align="center">Date</th><th align="center">Account</th><th align="center">Category</th><th align="center">SubCategory</th><th align="center">Note</th><th align="center">HKD</th><th align="center">Income/Expense</th><th align="center">Note</th><th align="center">Amount</th><th align="center">Currency</th><th align="center">Account</th></tr></thead><tbody><tr><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td></tr></tbody></table>
+<p>The concerned columns are:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th align="center">Date</th><th align="center">Account</th><th align="center">Category</th><th align="center">SubCategory</th><th align="center">Note</th><th align="center"><del>HKD</del></th><th align="center">Income/Expense</th><th align="center">Note (additional note)</th><th align="center">Amount</th><th align="center">Currency</th><th align="center"><del>Account</del></th></tr></thead><tbody><tr><td align="center">date</td><td align="center">asset account</td><td align="center">expense / asset account</td><td align="center">expense subcategory</td><td align="center">description</td><td align="center">---</td><td align="center">condition (income, expense, transfer)</td><td align="center">additional note</td><td align="center">amount</td><td align="center">currency</td><td align="center">---</td></tr></tbody></table>
+</li>
+</ol>
+<h3 id="conversion-logic"><a aria-hidden="true" class="anchor-heading" href="#conversion-logic"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Conversion logic</h3>
+<ul>
+<li>To convert from csv to journal
+<ol>
+<li>Specify all assets with groups
+<ol>
+<li>e.g. assets:bank:HSBC.</li>
+<li>assets:credit card:SimplyCash</li>
+<li>assets:digital wallet</li>
+</ol>
+</li>
+<li>For all asset account -> need to match account with the specified assets</li>
+<li>If 'Income/Expense' column is <code>Income</code>
+<ol>
+<li>asset account1 -> account</li>
+<li>account2 -> income:&#x3C;Category>:&#x3C;SubCategory></li>
+<li>amount1 -> <strong>+</strong>amount</li>
+<li>amount2 -> -amount</li>
+</ol>
+</li>
+<li>else if 'Income/Expense' column is <code>Expense</code>
+<ol>
+<li>asset account1 -> account</li>
+<li>account2 -> expense:&#x3C;Category>:&#x3C;SubCategory></li>
+<li>amount1 -> <strong>-</strong>amount</li>
+<li>amount2 -> +amount</li>
+</ol>
+</li>
+<li>else if 'Income/Expense' column is <code>Trasnsfer-Out</code>
+<ol>
+<li>asset account1 -> account</li>
+<li>account2 -> asset account -> &#x3C;Category></li>
+<li>amount1 -> <strong>-</strong>amount</li>
+<li>amount2 -> +amount</li>
+</ol>
+</li>
+<li>currency -> currency</li>
+<li>Date -> date</li>
+<li>Note -> note</li>
+<li>additional note -> additional note</li>
+</ol>
+</li>
+</ul>
+<p>journal format: <a href="https://hledger.org/add.html">https://hledger.org/add.html</a></p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/mydocs/notes/8DgvZQhkfr4OxXTq7oX8p">Root</a></li>
+<li><a href="/mydocs/notes/dqqbqwres0mwnmm56y70t78">Finance</a></li>
+</ul>

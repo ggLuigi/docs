@@ -1,0 +1,88 @@
+<h1 id="git"><a aria-hidden="true" class="anchor-heading" href="#git"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Git</h1>
+<h1 id="create-git-page"><a aria-hidden="true" class="anchor-heading" href="#create-git-page"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Create Git page</h1>
+<p>Reference page: <a href="https://wiki.dendron.so/notes/FnK2ws6w1uaS1YzBUY3BR/">GitHub Pages with GitHub Actions</a></p>
+<h3 id="setup-git"><a aria-hidden="true" class="anchor-heading" href="#setup-git"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Setup Git</h3>
+<ol>
+<li>Create the Git repo</li>
+<li>Locally in VSCode, initialize a workspace</li>
+<li>On workspace level (where dendron.yml locates)
+<pre class="language-sh"><code class="language-sh">git init
+git add .
+git commit -m"Initial commit"
+git branch -M main
+git remote add origin &#x3C;the github repo address>
+git push -u origin main
+</code></pre>
+</li>
+</ol>
+<h3 id="setup-dendron-for-building-the-webpage-with-nextjs"><a aria-hidden="true" class="anchor-heading" href="#setup-dendron-for-building-the-webpage-with-nextjs"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Setup dendron (for building the webpage with next.js)</h3>
+<ol>
+<li>On workspace level, initialize dendron-cli
+<pre class="language-sh"><code class="language-sh">npm init -y 
+npm install @dendronhq/dendron-cli@latest
+echo .next >> .gitignore
+npx dendron publish init # init the publish
+npx dendron publish dev # for checking if the publish works with the md note, browse http://localhost:3000/
+</code></pre>
+</li>
+<li>Configure your <code>dendron.yml</code> - Ctrl+Shift+P \&#x3C;Dendron: Configure (yaml)>
+<pre class="language-yaml"><code class="language-yaml"><span class="token key atrule">site</span><span class="token punctuation">:</span>
+ <span class="token key atrule">siteUrl</span><span class="token punctuation">:</span> https<span class="token punctuation">:</span>//&#x3C;username<span class="token punctuation">></span>.github.io
+ <span class="token key atrule">assetsPrefix</span><span class="token punctuation">:</span> /&#x3C;repo<span class="token punctuation">-</span>name<span class="token punctuation">></span>
+</code></pre>
+ Update like this
+<pre class="language-yaml"><code class="language-yaml"><span class="token key atrule">site</span><span class="token punctuation">:</span>
+ <span class="token key atrule">siteUrl</span><span class="token punctuation">:</span> https<span class="token punctuation">:</span>//kevinslin.github.io
+ <span class="token key atrule">assetsPrefix</span><span class="token punctuation">:</span> /dendron<span class="token punctuation">-</span>publish<span class="token punctuation">-</span>sample
+</code></pre>
+</li>
+</ol>
+<h2 id="setup-github-page"><a aria-hidden="true" class="anchor-heading" href="#setup-github-page"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Setup Github Page</h2>
+<ol>
+<li>Create a branch for dendron publishing.
+<pre class="language-sh"><code class="language-sh">git checkout -b pages
+git push -u origin HEAD
+</code></pre>
+</li>
+<li>Go to Github Setting to setup the Pages. Select <code>pages</code> branch, and select <code>/root</code> folder</li>
+<li>After building the page by <code>dendron-cli</code> (publish export), the html and style files will be stored in this <code>pages</code> branch. And Github Page will be built from those in <code>pages</code> branch</li>
+</ol>
+<h2 id="deprecated-setup-the-docs-folder"><a aria-hidden="true" class="anchor-heading" href="#deprecated-setup-the-docs-folder"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>(deprecated) Setup the <code>docs</code> folder</h2>
+<p><strong>!This is no longer needed as dendron helps the creation of docs folder with the latest updated version.</strong></p>
+<details>
+<summary>(expand to see) Guide to manually pull the <code>docs/</code> folder</summary>
+<ol>
+<li><code>docs</code> folder is needed in the git repo for dendron-cli export done in the github action.</li>
+<li>Copy the <code>docs</code> folder from <a href="https://github.com/dendronhq/template.publish.github/tree/main/docs">template.publish.github</a>
+<pre class="language-sh"><code class="language-sh">git remote add -f temp https://github.com/dendronhq/template.publish.github.git
+git sparse-checkout init # enable sparse-checkout
+git sparse-checkout set docs/   # only pull `docs`
+git sparse-checkout list
+git pull temp main # pull the temp remote repo main branch
+git status # check if `docs` is added
+git remote remove temp # remove the temp remote repo
+git sparse-checkout set # remove the target
+git sparse-checkout disable # disable sparse-checkout
+</code></pre>
+</li></ol></details>
+
+
+<h2 id="setup-github-action"><a aria-hidden="true" class="anchor-heading" href="#setup-github-action"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Setup Github Action</h2>
+<ol>
+<li>Go to <code>main</code> branch, at workspace level
+<pre class="language-sh"><code class="language-sh">git checkout main
+mkdir -p .github/workflows
+touch .github/workflows/publish.yml
+</code></pre>
+</li>
+<li><a href="https://wiki.dendron.so/notes/FnK2ws6w1uaS1YzBUY3BR/#steps---setup-github-actions">publish.yml</a></li>
+<li><a href="https://github.com/marketplace/actions/cache"><code>action/cache@v2</code></a> cache the <code>node-module/</code> from previous build. And update it if it changes</li>
+<li>This also cache <code>.next</code> folder from previous build. The next build if found cache, it will restore from it. In this case, it saves time from installing dependencies, initializing next app again</li>
+<li>check <a href="https://github.com/marketplace/actions/cache">https://github.com/marketplace/actions/cache</a></li>
+<li>Commit and push the change
+<pre class="language-sh"><code class="language-sh">git add .
+git commit -m "add workflow"
+git push
+</code></pre>
+</li>
+</ol>

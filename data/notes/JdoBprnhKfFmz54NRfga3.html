@@ -1,0 +1,145 @@
+<h1 id="react"><a aria-hidden="true" class="anchor-heading" href="#react"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>React</h1>
+<p>React is a JavaScript Library for building user interfaces.
+<a href="https://reactjs.org/tutorial/tutorial.html">https://reactjs.org/tutorial/tutorial.html</a>
+<a href="https://codepen.io/gaearon/pen/oWWQNa?editors=0011">https://codepen.io/gaearon/pen/oWWQNa?editors=0011</a>
+tic-tac-toe game</p>
+<pre class="language-js"><code class="language-js"><span class="token doc-comment comment">/**
+class Square extends React.Component <span class="token punctuation">{</span>  // a controlled components. will not do any action
+  render() <span class="token punctuation">{</span>
+    return (
+      &#x3C;button 
+        className="square"
+        onClick=<span class="token punctuation">{</span>() => <span class="token punctuation">{</span>
+          this.props.onClick(); // this send the function from parent (Board) to Square. props is passed as Component's parameter
+          // this.setState(<span class="token punctuation">{</span>value: 'X'<span class="token punctuation">}</span>);  // this set the state object
+          console.log('click-' + this.props.value);
+        <span class="token punctuation">}</span><span class="token punctuation">}</span>
+      >
+        <span class="token punctuation">{</span>this.props.value<span class="token punctuation">}</span>
+      &#x3C;/button> // this value is what will be shown on the board
+    );
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+*/</span>
+
+<span class="token keyword">function</span> <span class="token function"><span class="token maybe-class-name">Square</span></span><span class="token punctuation">(</span><span class="token parameter">props</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>  <span class="token comment">// a function component does not extend React.Component. Only need the input props param</span>
+  <span class="token keyword control-flow">return</span> <span class="token punctuation">(</span>
+    <span class="token operator">&#x3C;</span>button
+      className<span class="token operator">=</span><span class="token string">"square"</span>
+      onClick<span class="token operator">=</span><span class="token punctuation">{</span>props<span class="token punctuation">.</span><span class="token property-access">onClick</span><span class="token punctuation">}</span> <span class="token comment">// both () are removed</span>
+    <span class="token operator">></span>
+      <span class="token punctuation">{</span>props<span class="token punctuation">.</span><span class="token property-access">value</span><span class="token punctuation">}</span>
+    <span class="token operator">&#x3C;</span><span class="token operator">/</span>button<span class="token operator">></span> <span class="token comment">// no longer have this</span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>  
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">Board</span> <span class="token keyword">extends</span> <span class="token class-name">React<span class="token punctuation">.</span>Component</span> <span class="token punctuation">{</span>
+  <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token parameter">props</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token comment">// make a state to store the value of this component</span>
+    <span class="token keyword">super</span><span class="token punctuation">(</span>props<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">state</span> <span class="token operator">=</span> <span class="token punctuation">{</span>  <span class="token comment">// a component has props, and now we add 'state' field. We put 'value' to 'state' object</span>
+      <span class="token literal-property property">squares</span><span class="token operator">:</span> <span class="token known-class-name class-name">Array</span><span class="token punctuation">(</span><span class="token number">9</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token method function property-access">fill</span><span class="token punctuation">(</span><span class="token keyword null nil">null</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">xIsNext</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span> <span class="token comment">// the state is stored in Board instead of individual Square components</span>
+  <span class="token punctuation">}</span>
+  
+  <span class="token function">handleClick</span><span class="token punctuation">(</span><span class="token parameter">i</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> squares <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">state</span><span class="token punctuation">.</span><span class="token property-access">squares</span><span class="token punctuation">.</span><span class="token method function property-access">slice</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// make a shallow copy of squares array to modify instead of the existing array</span>
+    <span class="token keyword control-flow">if</span> <span class="token punctuation">(</span><span class="token function">calculateWinner</span><span class="token punctuation">(</span>squares<span class="token punctuation">)</span> <span class="token operator">||</span> squares<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token comment">// ignore click after winner or board is filled</span>
+      <span class="token keyword control-flow">return</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    squares<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">state</span><span class="token punctuation">.</span><span class="token property-access">xIsNext</span><span class="token operator">?</span> <span class="token string">'X'</span> <span class="token operator">:</span> <span class="token string">'O'</span><span class="token punctuation">;</span> <span class="token comment">// on that index, it changes from null to 'X'</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token method function property-access">setState</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+      <span class="token literal-property property">squares</span><span class="token operator">:</span> squares<span class="token punctuation">,</span>
+      <span class="token literal-property property">xIsNext</span><span class="token operator">:</span> <span class="token operator">!</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">state</span><span class="token punctuation">.</span><span class="token property-access">xIsNext</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">// update the state of the board. And will re-render Square's components</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token function">renderSquare</span><span class="token punctuation">(</span><span class="token parameter">i</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword control-flow">return</span> <span class="token punctuation">(</span>
+      <span class="token operator">&#x3C;</span><span class="token maybe-class-name">Square</span>
+        value<span class="token operator">=</span><span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">state</span><span class="token punctuation">.</span><span class="token property-access">squares</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">}</span> <span class="token comment">// = Square.props.value</span>
+        onClick<span class="token operator">=</span><span class="token punctuation">{</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token method function property-access">handleClick</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">}</span>
+      <span class="token operator">/</span><span class="token operator">></span>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> winner <span class="token operator">=</span> <span class="token function">calculateWinner</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">state</span><span class="token punctuation">.</span><span class="token property-access">squares</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">let</span> status<span class="token punctuation">;</span>
+    <span class="token keyword control-flow">if</span> <span class="token punctuation">(</span>winner<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token comment">// if there is winner</span>
+      status <span class="token operator">=</span> <span class="token string">"Winner is "</span> <span class="token operator">+</span> winner<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword control-flow">else</span> <span class="token punctuation">{</span>
+      status <span class="token operator">=</span> <span class="token string">'Next player: '</span> <span class="token operator">+</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">state</span><span class="token punctuation">.</span><span class="token property-access">xIsNext</span> <span class="token operator">?</span> <span class="token string">'X'</span> <span class="token operator">:</span> <span class="token string">'O'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword control-flow">return</span> <span class="token punctuation">(</span>
+      <span class="token operator">&#x3C;</span>div<span class="token operator">></span>
+        <span class="token operator">&#x3C;</span>div className<span class="token operator">=</span><span class="token string">"status"</span><span class="token operator">></span><span class="token punctuation">{</span>status<span class="token punctuation">}</span><span class="token operator">&#x3C;</span><span class="token operator">/</span>div<span class="token operator">></span>
+        <span class="token operator">&#x3C;</span>div className<span class="token operator">=</span><span class="token string">"board-row"</span><span class="token operator">></span>
+          <span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token method function property-access">renderSquare</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">}</span>
+          <span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token method function property-access">renderSquare</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">}</span>
+          <span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token method function property-access">renderSquare</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">}</span>
+        <span class="token operator">&#x3C;</span><span class="token operator">/</span>div<span class="token operator">></span>
+        <span class="token operator">&#x3C;</span>div className<span class="token operator">=</span><span class="token string">"board-row"</span><span class="token operator">></span>
+          <span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token method function property-access">renderSquare</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">}</span>
+          <span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token method function property-access">renderSquare</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">}</span>
+          <span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token method function property-access">renderSquare</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">}</span>
+        <span class="token operator">&#x3C;</span><span class="token operator">/</span>div<span class="token operator">></span>
+        <span class="token operator">&#x3C;</span>div className<span class="token operator">=</span><span class="token string">"board-row"</span><span class="token operator">></span>
+          <span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token method function property-access">renderSquare</span><span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">}</span>
+          <span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token method function property-access">renderSquare</span><span class="token punctuation">(</span><span class="token number">7</span><span class="token punctuation">)</span><span class="token punctuation">}</span>
+          <span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token method function property-access">renderSquare</span><span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">)</span><span class="token punctuation">}</span>
+        <span class="token operator">&#x3C;</span><span class="token operator">/</span>div<span class="token operator">></span>
+      <span class="token operator">&#x3C;</span><span class="token operator">/</span>div<span class="token operator">></span>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">Game</span> <span class="token keyword">extends</span> <span class="token class-name">React<span class="token punctuation">.</span>Component</span> <span class="token punctuation">{</span>
+  <span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword control-flow">return</span> <span class="token punctuation">(</span>
+      <span class="token operator">&#x3C;</span>div className<span class="token operator">=</span><span class="token string">"game"</span><span class="token operator">></span>
+        <span class="token operator">&#x3C;</span>div className<span class="token operator">=</span><span class="token string">"game-board"</span><span class="token operator">></span>
+          <span class="token operator">&#x3C;</span><span class="token maybe-class-name">Board</span> <span class="token operator">/</span><span class="token operator">></span>
+        <span class="token operator">&#x3C;</span><span class="token operator">/</span>div<span class="token operator">></span>
+        <span class="token operator">&#x3C;</span>div className<span class="token operator">=</span><span class="token string">"game-info"</span><span class="token operator">></span>
+          <span class="token operator">&#x3C;</span>div<span class="token operator">></span><span class="token punctuation">{</span><span class="token comment">/* status */</span><span class="token punctuation">}</span><span class="token operator">&#x3C;</span><span class="token operator">/</span>div<span class="token operator">></span>
+          <span class="token operator">&#x3C;</span>ol<span class="token operator">></span><span class="token punctuation">{</span><span class="token comment">/* TODO */</span><span class="token punctuation">}</span><span class="token operator">&#x3C;</span><span class="token operator">/</span>ol<span class="token operator">></span>
+        <span class="token operator">&#x3C;</span><span class="token operator">/</span>div<span class="token operator">></span>
+      <span class="token operator">&#x3C;</span><span class="token operator">/</span>div<span class="token operator">></span>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// ========================================</span>
+
+<span class="token maybe-class-name">ReactDOM</span><span class="token punctuation">.</span><span class="token method function property-access">render</span><span class="token punctuation">(</span>
+  <span class="token operator">&#x3C;</span><span class="token maybe-class-name">Game</span> <span class="token operator">/</span><span class="token operator">></span><span class="token punctuation">,</span>
+  <span class="token dom variable">document</span><span class="token punctuation">.</span><span class="token method function property-access">getElementById</span><span class="token punctuation">(</span><span class="token string">'root'</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">function</span> <span class="token function">calculateWinner</span><span class="token punctuation">(</span><span class="token parameter">squares</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> lines <span class="token operator">=</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token punctuation">]</span><span class="token punctuation">;</span>
+  <span class="token keyword control-flow">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&#x3C;</span> lines<span class="token punctuation">.</span><span class="token property-access">length</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> <span class="token punctuation">[</span>a<span class="token punctuation">,</span> b<span class="token punctuation">,</span> c<span class="token punctuation">]</span> <span class="token operator">=</span> lines<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword control-flow">if</span> <span class="token punctuation">(</span>squares<span class="token punctuation">[</span>a<span class="token punctuation">]</span> <span class="token operator">&#x26;&#x26;</span> squares<span class="token punctuation">[</span>a<span class="token punctuation">]</span> <span class="token operator">===</span> squares<span class="token punctuation">[</span>b<span class="token punctuation">]</span> <span class="token operator">&#x26;&#x26;</span> squares<span class="token punctuation">[</span>a<span class="token punctuation">]</span> <span class="token operator">===</span> squares<span class="token punctuation">[</span>c<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword control-flow">return</span> squares<span class="token punctuation">[</span>a<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword control-flow">return</span> <span class="token keyword null nil">null</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/mydocs/notes/8DgvZQhkfr4OxXTq7oX8p">Root</a></li>
+</ul>
